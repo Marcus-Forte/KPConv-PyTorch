@@ -97,7 +97,7 @@ if __name__ == '__main__':
     #       > 'last_XXX': Automatically retrieve the last trained model on dataset XXX
     #       > '(old_)results/Log_YYYY-MM-DD_HH-MM-SS': Directly provide the path of a trained model
 
-    chosen_log = 'results/Log_2024-05-14_21-04-36'
+    chosen_log = '/root/Light_KPFCNN/'
 
     # Choose the index of the checkpoint to load OR None if you want to load the current checkpoint
     chkp_idx = -1
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     #config.augment_symmetries = False
     #config.batch_num = 3
     #config.in_radius = 4
-    config.validation_size = 200
+    config.validation_size = 10
     config.input_threads = 10
 
     ##############
@@ -169,7 +169,7 @@ if __name__ == '__main__':
         test_sampler = ModelNet40Sampler(test_dataset)
         collate_fn = ModelNet40Collate
     elif config.dataset == 'S3DIS':
-        test_dataset = S3DISDataset(config, set='validation', use_potentials=True)
+        test_dataset = S3DISDataset(config, set='validation', use_potentials=False)
         test_sampler = S3DISSampler(test_dataset)
         collate_fn = S3DISCollate
     elif config.dataset == 'SensatUrban':
@@ -221,7 +221,9 @@ if __name__ == '__main__':
     if config.dataset_task == 'classification':
         tester.classification_test(net, test_loader, config)
     elif config.dataset_task == 'cloud_segmentation':
-        tester.cloud_segmentation_test(net, test_loader, config)
+        print('segmentation')
+        print(net)
+        tester.cloud_segmentation_test(net, test_loader, config, 10, True)
     elif config.dataset_task == 'slam_segmentation':
         tester.slam_segmentation_test(net, test_loader, config)
     else:

@@ -246,7 +246,7 @@ def write_ply(filename, field_list, field_names, triangular_faces=None):
     >>> write_ply('example3.ply', [points, colors, values], field_names)
 
     """
-
+    
     # Format list input to the right form
     field_list = list(field_list) if (type(field_list) == list or type(field_list) == tuple) else list((field_list,))
     for i, field in enumerate(field_list):
@@ -258,6 +258,7 @@ def write_ply(filename, field_list, field_names, triangular_faces=None):
 
     # check all fields have the same number of data
     n_points = [field.shape[0] for field in field_list]
+    print(f'saving ply: {filename}. {n_points} points')
     if not np.all(np.equal(n_points, n_points[0])):
         print('wrong field dimensions')
         return False    

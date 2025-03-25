@@ -86,7 +86,7 @@ class S3DISDataset(PointCloudDataset):
         self.ignored_labels = np.array([])
 
         # Dataset folder
-        self.path = '../../Data/S3DIS'
+        self.path = '/root/Stanford3dDataset_v1.2'
 
         # Type of task conducted on this dataset
         self.dataset_task = 'cloud_segmentation'
@@ -111,9 +111,9 @@ class S3DISDataset(PointCloudDataset):
         ply_path = join(self.path, self.train_path)
 
         # Proportion of validation scenes
-        self.cloud_names = ['Area_1', 'Area_2', 'Area_3', 'Area_4', 'Area_5', 'Area_6']
+        self.cloud_names = ['Area_1', 'Area_2']
         self.all_splits = [0, 1, 2, 3, 4, 5]
-        self.validation_split = 4
+        self.validation_split = 0
 
         # Number of models used per epoch
         if self.set == 'training':
@@ -952,12 +952,17 @@ class S3DISSampler(Sampler):
 
             # Choose random points of each class for each cloud
             epoch_indices = np.zeros((2, 0), dtype=np.int64)
+            
             for label_ind, label in enumerate(self.dataset.label_values):
                 if label not in self.dataset.ignored_labels:
 
                     # Gather indices of the points with this label in all the input clouds 
                     all_label_indices = []
+                    print(f'self.dataset.input_labels: {self.dataset.input_labels}')
                     for cloud_ind, cloud_labels in enumerate(self.dataset.input_labels):
+                        print(f'cloud labels: {cloud_labels}')
+                        print(f'cloud ind: {cloud_ind}')
+                        
                         label_indices = np.where(np.equal(cloud_labels, label))[0]
                         all_label_indices.append(np.vstack((np.full(label_indices.shape, cloud_ind, dtype=np.int64), label_indices)))
 

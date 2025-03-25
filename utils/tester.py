@@ -250,11 +250,16 @@ class ModelTester:
 
                 # Forward pass
                 outputs = net(batch, config)
+                print('outputs')
+                print(outputs)
+                print(batch)
+                print(config)
 
                 t += [time.time()]
 
                 # Get probs and labels
                 stacked_probs = softmax(outputs).cpu().detach().numpy()
+                print(stacked_probs)
                 s_points = batch.points[0].cpu().numpy()
                 lengths = batch.lengths[0].cpu().numpy()
                 in_inds = batch.input_inds.cpu().numpy()
